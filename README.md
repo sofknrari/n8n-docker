@@ -3,7 +3,7 @@
 
 <div align="center">
 
-![N8N Logo](https://raw.githubusercontent.com/n8n-io/n8n/master/docs/static/img/n8n-logo.png)
+![N8N Logo](https://avatars.githubusercontent.com/u/45487711?v=4)
 
 ### An automated workflow platform with secure HTTPS access and automatic certificate renewal
 
