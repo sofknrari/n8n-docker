@@ -65,7 +65,7 @@ Check if all services are running:
 docker-compose ps
 ```
 📁 Project Structure
-text
+```text
 n8n-deployment/
 ├── 📄 docker-compose.yml          # Main deployment file
 ├── 📄 docker-compose.override.yml # Domain configuration
@@ -74,9 +74,9 @@ n8n-deployment/
 ├── 📁 vhost/                      # Nginx virtual hosts
 ├── 📁 html/                       # Web root for challenges
 └── 📄 README.md                   # This file
-🔧 Services Architecture
 ```
-graph LR
+🔧 Services Architecture
+```graph LR
     A[User] --> B[443:HTTPS]
     A --> C[80:HTTP]
     B --> D[Nginx Proxy]
