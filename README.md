@@ -40,3 +40,123 @@ Before deployment, ensure you have:
 git clone <your-repo-url>
 cd n8n-deployment
 mkdir -p certs vhost html data
+
+2. Configuration
+Update the docker-compose.yml file:
+
+yaml
+environment:
+  - DEFAULT_EMAIL=your-real-email@domain.com  # ✏️ Replace with your email
+3. DNS Configuration
+Ensure your domain points to your server IP:
+
+dns
+n8n.ninine.ru.    A    31.44.5.35
+4. Deployment
+bash
+docker-compose up -d
+5. Verification
+Check if all services are running:
+
+bash
+docker-compose ps
+📁 Project Structure
+text
+n8n-deployment/
+├── 📄 docker-compose.yml          # Main deployment file
+├── 📄 docker-compose.override.yml # Domain configuration
+├── 📁 data/                       # N8N persistent data
+├── 📁 certs/                      # SSL certificates (auto-generated)
+├── 📁 vhost/                      # Nginx virtual hosts
+├── 📁 html/                       # Web root for challenges
+└── 📄 README.md                   # This file
+🔧 Services Architecture
+
+
+
+
+
+
+
+🌐 Access Points
+Service	URL	Port	Purpose
+N8N Web UI	https://n8n.ninine.ru	443	Main application
+HTTP Redirect	http://n8n.ninine.ru	80	Auto-redirect to HTTPS
+Internal N8N	http://localhost:5678	5678	Direct container access
+🔒 SSL Features
+✅ Automatic issuance of Let's Encrypt certificates
+
+✅ Auto-renewal 30 days before expiration
+
+✅ HTTP to HTTPS automatic redirect
+
+✅ Secure cookies enabled
+
+✅ HSTS headers (recommended)
+
+📊 Monitoring & Logs
+Check service status:
+bash
+docker-compose logs n8n
+docker-compose logs nginx-proxy
+docker-compose logs ssl-companion
+Monitor SSL certificates:
+bash
+docker exec ssl-companion ls -la /etc/nginx/certs
+Force certificate renewal:
+bash
+docker exec ssl-companion /app/force_renew
+⚙️ Environment Variables
+Variable	Purpose	Default
+VIRTUAL_HOST	Domain name	n8n.ninine.ru
+LETSENCRYPT_HOST	SSL domain	n8n.ninine.ru
+DEFAULT_EMAIL	SSL contact	Your email
+N8N_EDITOR_BASE_URL	Public URL	https://n8n.ninine.ru/
+🛡️ Security Notes
+🔐 Never expose port 5678 directly to internet
+
+📧 Use valid email for certificate notifications
+
+🔄 Keep Docker updated for security patches
+
+💾 Regular backups of ./data directory
+
+🚨 Troubleshooting
+Common Issues:
+SSL not working
+
+Check DNS propagation
+
+Verify ports 80/443 are open
+
+Check companion logs for ACME errors
+
+N8N inaccessible
+
+bash
+docker-compose restart n8n nginx-proxy
+Certificate renewal failing
+
+bash
+docker-compose down && docker-compose up -d
+📝 Maintenance
+Update all services:
+bash
+docker-compose pull
+docker-compose up -d
+Backup data:
+bash
+tar -czf n8n-backup-$(date +%Y%m%d).tar.gz ./data
+Restore from backup:
+bash
+tar -xzf n8n-backup-YYYYMMDD.tar.gz
+🤝 Contributing
+Feel free to:
+
+🐛 Report bugs
+
+💡 Suggest features
+
+🔧 Submit pull requests
+
+📚 Improve documentation

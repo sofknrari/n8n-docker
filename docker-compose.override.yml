@@ -1,0 +1,7 @@
+version: '3.8'
+
+services:
+  n8n:
+    environment:
+      - VIRTUAL_HOST=example.com # set your domain name
+      - LETSENCRYPT_HOST=example.com # set your domain name
