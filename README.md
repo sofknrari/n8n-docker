@@ -40,26 +40,30 @@ Before deployment, ensure you have:
 git clone <your-repo-url>
 cd n8n-deployment
 mkdir -p certs vhost html data
-
+```
 2. Configuration
 Update the docker-compose.yml file:
 
-yaml
+```yaml
 environment:
   - DEFAULT_EMAIL=your-real-email@domain.com  # ✏️ Replace with your email
+```
 3. DNS Configuration
 Ensure your domain points to your server IP:
 
-dns
-n8n.ninine.ru.    A    31.44.5.35
+```dns
+example.com.    A    xx.xx.xx.xx
+```
 4. Deployment
-bash
+```bash
 docker-compose up -d
+```
 5. Verification
 Check if all services are running:
 
-bash
+```bash
 docker-compose ps
+```
 📁 Project Structure
 text
 n8n-deployment/
@@ -71,17 +75,21 @@ n8n-deployment/
 ├── 📁 html/                       # Web root for challenges
 └── 📄 README.md                   # This file
 🔧 Services Architecture
-
-
-
-
-
-
+```
+graph LR
+    A[User] --> B[443:HTTPS]
+    A --> C[80:HTTP]
+    B --> D[Nginx Proxy]
+    C --> D
+    D --> E[SSL Companion]
+    D --> F[N8N App]
+    E --> G[Let's Encrypt]
+```
 
 🌐 Access Points
 Service	URL	Port	Purpose
-N8N Web UI	https://n8n.ninine.ru	443	Main application
-HTTP Redirect	http://n8n.ninine.ru	80	Auto-redirect to HTTPS
+N8N Web UI	https://example.com	443	Main application
+HTTP Redirect	http://example.com	80	Auto-redirect to HTTPS
 Internal N8N	http://localhost:5678	5678	Direct container access
 🔒 SSL Features
 ✅ Automatic issuance of Let's Encrypt certificates
@@ -96,22 +104,25 @@ Internal N8N	http://localhost:5678	5678	Direct container access
 
 📊 Monitoring & Logs
 Check service status:
-bash
+```bash
 docker-compose logs n8n
 docker-compose logs nginx-proxy
 docker-compose logs ssl-companion
+```
 Monitor SSL certificates:
-bash
+```bash
 docker exec ssl-companion ls -la /etc/nginx/certs
+```
 Force certificate renewal:
-bash
+```bash
 docker exec ssl-companion /app/force_renew
+```
 ⚙️ Environment Variables
 Variable	Purpose	Default
-VIRTUAL_HOST	Domain name	n8n.ninine.ru
-LETSENCRYPT_HOST	SSL domain	n8n.ninine.ru
+VIRTUAL_HOST	Domain name	example.com
+LETSENCRYPT_HOST	SSL domain	example.com
 DEFAULT_EMAIL	SSL contact	Your email
-N8N_EDITOR_BASE_URL	Public URL	https://n8n.ninine.ru/
+N8N_EDITOR_BASE_URL	Public URL	https://example.com/
 🛡️ Security Notes
 🔐 Never expose port 5678 directly to internet
 
@@ -133,23 +144,28 @@ Check companion logs for ACME errors
 
 N8N inaccessible
 
-bash
+```bash
 docker-compose restart n8n nginx-proxy
+```
 Certificate renewal failing
 
-bash
+```bash
 docker-compose down && docker-compose up -d
+```
 📝 Maintenance
 Update all services:
-bash
+```bash
 docker-compose pull
 docker-compose up -d
+```
 Backup data:
-bash
+```bash
 tar -czf n8n-backup-$(date +%Y%m%d).tar.gz ./data
+```
 Restore from backup:
-bash
+```bash
 tar -xzf n8n-backup-YYYYMMDD.tar.gz
+```
 🤝 Contributing
 Feel free to:
 
