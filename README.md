@@ -60,6 +60,7 @@ Before deployment make sure you have:
 git clone <your-repo-url>
 cd n8n-deployment
 mkdir -p certs vhost html data
+chown 1000:1000 data/
 ```
 
 ### 2. Configure
