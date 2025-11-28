@@ -11,7 +11,7 @@ services:
       - N8N_PORT=5678
       - N8N_PROTOCOL=https
       - N8N_EDITOR_BASE_URL=https://example.com/ # set your domain name
-      - WEBHOOK_URL=https://n8n.ninine.ru/
+      - WEBHOOK_URL=https://example.com/
       - N8N_LISTEN_ADDRESS=0.0.0.0
       - N8N_WORKER_SERVER_ADDRESS=0.0.0.0
       - N8N_SECURE_COOKIE=true
